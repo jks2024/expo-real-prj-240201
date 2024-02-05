@@ -7,21 +7,12 @@ import EditProfileScreen from "./EditProfileScreen";
 import CategoryScreen from "./CategoryScreen";
 import BoardWriteScreen from "./BoardWriteScreen";
 import MyLocationScreen from "./MyLocationScreen";
-import { initFirebase } from "../api/firebase";
+import ChatRoomCreate from "./ChattingRoomCreate";
+import Chatting from "./Chatting";
 
 const Stack = createStackNavigator();
 
 const RootStack = () => {
-  useEffect(() => {
-    (async () => {
-      try {
-        const app = initFirebase();
-        console.log("Firebase initialized: ", app);
-      } catch (err) {
-        console.error("Firebase initialization error: ", err);
-      }
-    })();
-  }, []);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -58,6 +49,16 @@ const RootStack = () => {
         name="MyLocationScreen"
         component={MyLocationScreen}
         options={{ title: "내 위치" }}
+      />
+      <Stack.Screen
+        name="ChatCreate"
+        component={ChatRoomCreate}
+        options={{ title: "채팅방 만들기" }}
+      />
+      <Stack.Screen
+        name="Chatting"
+        component={Chatting}
+        options={{ title: "채팅방" }}
       />
     </Stack.Navigator>
   );

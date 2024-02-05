@@ -24,7 +24,6 @@ const CategoryScreen = () => {
     const cateList = async () => {
       try {
         const rsp = await AxiosApi.cateList();
-        console.log(rsp.data);
         setCategory(rsp.data);
       } catch (e) {
         console.log(e);
@@ -37,7 +36,6 @@ const CategoryScreen = () => {
     const email = await getEmail();
     try {
       const rsp = await AxiosApi.cateInsert(email, text);
-      console.log(rsp.data);
       if (rsp.data) {
         const rsp2 = await AxiosApi.cateList();
         setCategory(rsp2.data);

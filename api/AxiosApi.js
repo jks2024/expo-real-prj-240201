@@ -1,7 +1,7 @@
 import axios from "axios";
 //const SERVER_DOMAIN = "http://localhost:8111";
 //const SERVER_DOMAIN = "http://192.168.110.38:8111";
-const SERVER_DOMAIN = "http://172.30.1.11:8111";
+const SERVER_DOMAIN = "http://192.168.110.38:8111";
 
 const AxiosApi = {
   // 로그인
@@ -29,6 +29,7 @@ const AxiosApi = {
     return await axios.get(SERVER_DOMAIN + "/users/list");
   },
   memberGetOne: async (email) => {
+    console.log("회원 정보 조회 : ", email);
     return await axios.get(SERVER_DOMAIN + `/users/detail/${email}`);
   },
   // 회원 정보 수정
@@ -81,6 +82,7 @@ const AxiosApi = {
   },
   // 채팅방 정보 보기
   chatDetail: async (roomId) => {
+    console.log("Axios 채팅방 정보 : ", roomId);
     return await axios.get(SERVER_DOMAIN + `/chat/room/${roomId}`);
   },
   // 채팅방 생성

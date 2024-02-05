@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./HomeScreen";
 import MapScreen from "./MapScreen";
-import ChattingScreen from "./ChattingScreen";
+import ChatListScreen from "./ChatListScreen";
 import BoardScreen from "./BoardScreen";
 import MyInfoScreen from "./MyInfoScreen";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -49,7 +49,7 @@ const MainTab = () => {
       />
       <Tab.Screen
         name="채팅"
-        component={ChattingScreen}
+        component={ChatListScreen}
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({ color, size }) => (

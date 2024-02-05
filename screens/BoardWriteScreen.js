@@ -35,7 +35,7 @@ const BoardWriteScreen = () => {
           setEmail(data);
         }
       } catch (error) {
-        Alert.alert("Error", "Failed to load email from storage");
+        Alert.alert("이메일을 불러오는데 실패했습니다.");
       }
     };
 
@@ -44,7 +44,7 @@ const BoardWriteScreen = () => {
         const response = await AxiosApi.cateList();
         setCategories(response.data);
       } catch (error) {
-        Alert.alert("Error", "Failed to load categories");
+        Alert.alert("카테고리 목록을 불러오는데 실패했습니다.");
       }
     };
 
@@ -56,10 +56,7 @@ const BoardWriteScreen = () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
-      Alert.alert(
-        "Permission required",
-        "You need to grant photo access to use this feature"
-      );
+      Alert.alert("퍼미션 에러", "사진을 선택하기 위해서는 권한이 필요합니다.");
       return;
     }
 
@@ -102,11 +99,11 @@ const BoardWriteScreen = () => {
         url
       );
       if (response.data) {
-        Alert.alert("Success", "Your post has been submitted successfully");
+        Alert.alert("게시글 작성 성공", "게시글이 성공적으로 작성되었습니다.");
         navigation.goBack();
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to submit post");
+      Alert.alert("게시글 작성 실패", "게시글 작성에 실패했습니다.");
     }
   };
 

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ChattingScreen = () => {
+const ChatListScreen = () => {
   const [chatRooms, setChatRooms] = useState([]);
   const navigation = useNavigation();
 
@@ -110,4 +110,4 @@ const ChattingScreen = () => {
   );
 };
 
-export default ChattingScreen;
+export default ChatListScreen;

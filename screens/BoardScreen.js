@@ -54,9 +54,9 @@ const BoardScreen = () => {
       <View style={styles.boardListContainer}>
         <BoardList
           boardList={boardList}
-          onItemPress={(item) =>
-            navigation.navigate("BoardDetail", { boardId: item.boardId })
-          }
+          // onItemPress={(item) =>
+          //   navigation.navigate("BoardDetail", { boardId: item.boardId })
+          // }
         />
       </View>
       <TouchableOpacity
