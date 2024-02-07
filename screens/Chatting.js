@@ -110,6 +110,7 @@ const Chatting = () => {
 
   const closeChat = () => {
     sendWebSocketMessage("CLOSE", "종료 합니다.");
+    ws.current.close();
     navigation.goBack();
   };
 

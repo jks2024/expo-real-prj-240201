@@ -1,25 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   View,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   Image,
-} from 'react-native';
+} from "react-native";
 
-const CateInsert = ({onInsert}) => {
-  const [text, setText] = useState('');
+const CateInsert = ({ onInsert }) => {
+  const [text, setText] = useState("");
 
   const onPress = () => {
     if (text.length > 0) {
       onInsert(text);
-      setText('');
+      setText("");
     }
   };
 
   const button = (
     <View style={styles.buttonStyle}>
-      <Image source={require('../../assets/add_white.png')} />
+      <Image source={require("../../assets/add_white.png")} />
     </View>
   );
 
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   block: {
     height: 64,
     paddingHorizontal: 16,
-    borderColor: '#bdbdbd',
+    borderColor: "#bdbdbd",
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
   },
   input: {
     flex: 1,
@@ -56,15 +56,15 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   buttonStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: 48,
     height: 48,
-    backgroundColor: '#26a69a',
+    backgroundColor: "#26a69a",
     borderRadius: 24,
   },
   circleWrapper: {
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 24,
   },
 });

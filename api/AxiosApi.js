@@ -64,6 +64,10 @@ const AxiosApi = {
   boardList: async () => {
     return await axios.get(SERVER_DOMAIN + "/api/board/list");
   },
+  // 게시글 상세 정보
+  boardDetail: async (boardId) => {
+    return await axios.get(SERVER_DOMAIN + `/api/board/detail/${boardId}`);
+  },
   // 게시글 쓰기
   boardWrite: async (email, title, category, content, fileUri) => {
     console.log("게시글 쓰기 : ", email, title, category, content, fileUri);
@@ -75,6 +79,19 @@ const AxiosApi = {
       img: fileUri,
     };
     return await axios.post(SERVER_DOMAIN + "/api/board/new", board);
+  },
+  // 댓글 목록 가져 오기
+  commentList: async (boardId) => {
+    return await axios.get(SERVER_DOMAIN + `/api/comment/list/${boardId}`);
+  },
+  // 댓글 쓰기
+  commentWrite: async (boardId, email, content) => {
+    const comment = {
+      boardId: boardId,
+      email: email,
+      content: content,
+    };
+    return await axios.post(SERVER_DOMAIN + "/api/comment/new", comment);
   },
   // 채팅방 목록 보기
   chatList: async () => {

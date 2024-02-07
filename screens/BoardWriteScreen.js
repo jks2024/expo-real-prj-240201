@@ -64,7 +64,7 @@ const BoardWriteScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!pickerResult.canceled) {
@@ -79,26 +79,24 @@ const BoardWriteScreen = () => {
     }
 
     try {
-      let url = fileUri;
+      const filename = fileUri.split("/").pop();
+      const storage = getStorage();
+      const storageRef = ref(storage, `/board/${filename}`);
+      const response = await fetch(fileUri);
+      const blob = await response.blob();
+      // 파일 업로드
+      await uploadBytes(storageRef, blob);
+      // 업로드된 이미지의 URL 가져오기
+      const url = await getDownloadURL(storageRef);
 
-      if (fileUri) {
-        const filename = fileUri.split("/").pop();
-        const storage = getStorage();
-        const storageRef = ref(storage, `/board/${filename}`);
-        const response = await fetch(fileUri);
-        const blob = await response.blob();
-        await uploadBytes(storageRef, blob);
-        url = await getDownloadURL(storageRef);
-      }
-
-      const response = await AxiosApi.boardWrite(
+      const rsp = await AxiosApi.boardWrite(
         email,
         title,
         selectedCategory,
         content,
         url
       );
-      if (response.data) {
+      if (rsp.data) {
         Alert.alert("게시글 작성 성공", "게시글이 성공적으로 작성되었습니다.");
         navigation.goBack();
       }

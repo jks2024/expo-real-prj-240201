@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1, // 스크롤뷰가 화면에 꽉 차도록 설정
     alignItems: "center", // 가운데 정렬
-    justifyContent: "center", // 수직 가운데 정렬
   },
   logo: {
     width: 100,
@@ -196,6 +195,7 @@ const SignUpScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.topMagin}>

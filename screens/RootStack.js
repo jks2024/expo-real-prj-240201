@@ -6,6 +6,7 @@ import Signup from "./SignUpScreen";
 import EditProfileScreen from "./EditProfileScreen";
 import CategoryScreen from "./CategoryScreen";
 import BoardWriteScreen from "./BoardWriteScreen";
+import BoardDetail from "./BoardDetail";
 import MyLocationScreen from "./MyLocationScreen";
 import ChatRoomCreate from "./ChattingRoomCreate";
 import Chatting from "./Chatting";
@@ -44,6 +45,11 @@ const RootStack = () => {
         name="BoardWrite"
         component={BoardWriteScreen}
         options={{ title: "게시글 작성" }}
+      />
+      <Stack.Screen
+        name="BoardDetail"
+        component={BoardDetail}
+        options={{ title: "게시글 상세보기" }}
       />
       <Stack.Screen
         name="MyLocationScreen"

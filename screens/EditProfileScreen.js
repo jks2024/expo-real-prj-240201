@@ -27,8 +27,8 @@ const EditProfileScreen = ({ route, navigation }) => {
   const handleChoosePhoto = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your photos!");
+    if (!permissionResult.granted) {
+      Alert.alert("퍼미션 에러", "사진을 선택하기 위해서는 권한이 필요합니다.");
       return;
     }
 
@@ -36,7 +36,7 @@ const EditProfileScreen = ({ route, navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!pickerResult.canceled) {
