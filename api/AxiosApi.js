@@ -1,7 +1,5 @@
 import axios from "axios";
-//const SERVER_DOMAIN = "http://localhost:8111";
-//const SERVER_DOMAIN = "http://192.168.110.38:8111";
-const SERVER_DOMAIN = "http://192.168.110.38:8111";
+import Commons from "../utils/Common";
 
 const AxiosApi = {
   // 로그인
@@ -10,11 +8,11 @@ const AxiosApi = {
       email: email,
       pwd: pw,
     };
-    return await axios.post(SERVER_DOMAIN + "/auth/login", login);
+    return await axios.post(Commons.SERVER_DOMAIN + "/auth/login", login);
   },
   // 회원 가입 여부 확인
   memberRegCheck: async (email) => {
-    return await axios.get(SERVER_DOMAIN + `/auth/exists/${email}`);
+    return await axios.get(Commons.SERVER_DOMAIN + `/auth/exists/${email}`);
   },
   // 회원 가입
   memberReg: async (email, pwd, name) => {
@@ -23,14 +21,14 @@ const AxiosApi = {
       pwd: pwd,
       name: name,
     };
-    return await axios.post(SERVER_DOMAIN + "/auth/signup", member);
+    return await axios.post(Commons.SERVER_DOMAIN + "/auth/signup", member);
   },
   membersGet: async () => {
-    return await axios.get(SERVER_DOMAIN + "/users/list");
+    return await axios.get(Commons.SERVER_DOMAIN + "/users/list");
   },
   memberGetOne: async (email) => {
     console.log("회원 정보 조회 : ", email);
-    return await axios.get(SERVER_DOMAIN + `/users/detail/${email}`);
+    return await axios.get(Commons.SERVER_DOMAIN + `/users/detail/${email}`);
   },
   // 회원 정보 수정
   memberUpdate: async (email, name, image) => {
@@ -40,11 +38,11 @@ const AxiosApi = {
       name: name,
       image: image,
     };
-    return await axios.put(SERVER_DOMAIN + "/users/modify", member);
+    return await axios.put(Commons.SERVER_DOMAIN + "/users/modify", member);
   },
   // 카테고리 조회
   cateList: async () => {
-    return await axios.get(SERVER_DOMAIN + "/api/category/list");
+    return await axios.get(Commons.SERVER_DOMAIN + "/api/category/list");
   },
   // 카테고리 등록
   cateInsert: async (email, category) => {
@@ -52,21 +50,23 @@ const AxiosApi = {
       email: email,
       categoryName: category,
     };
-    return await axios.post(SERVER_DOMAIN + "/api/category/new", cate);
+    return await axios.post(Commons.SERVER_DOMAIN + "/api/category/new", cate);
   },
   // 카테고리 삭제
   cateDelete: async (categoryId) => {
     return await axios.delete(
-      SERVER_DOMAIN + `/api/category/delete/${categoryId}`
+      Commons.SERVER_DOMAIN + `/api/category/delete/${categoryId}`
     );
   },
   // 게시글 목록
   boardList: async () => {
-    return await axios.get(SERVER_DOMAIN + "/api/board/list");
+    return await axios.get(Commons.SERVER_DOMAIN + "/api/board/list");
   },
   // 게시글 상세 정보
   boardDetail: async (boardId) => {
-    return await axios.get(SERVER_DOMAIN + `/api/board/detail/${boardId}`);
+    return await axios.get(
+      Commons.SERVER_DOMAIN + `/api/board/detail/${boardId}`
+    );
   },
   // 게시글 쓰기
   boardWrite: async (email, title, category, content, fileUri) => {
@@ -78,11 +78,13 @@ const AxiosApi = {
       content: content,
       img: fileUri,
     };
-    return await axios.post(SERVER_DOMAIN + "/api/board/new", board);
+    return await axios.post(Commons.SERVER_DOMAIN + "/api/board/new", board);
   },
   // 댓글 목록 가져 오기
   commentList: async (boardId) => {
-    return await axios.get(SERVER_DOMAIN + `/api/comment/list/${boardId}`);
+    return await axios.get(
+      Commons.SERVER_DOMAIN + `/api/comment/list/${boardId}`
+    );
   },
   // 댓글 쓰기
   commentWrite: async (boardId, email, content) => {
@@ -91,23 +93,26 @@ const AxiosApi = {
       email: email,
       content: content,
     };
-    return await axios.post(SERVER_DOMAIN + "/api/comment/new", comment);
+    return await axios.post(
+      Commons.SERVER_DOMAIN + "/api/comment/new",
+      comment
+    );
   },
   // 채팅방 목록 보기
   chatList: async () => {
-    return await axios.get(SERVER_DOMAIN + "/chat/list");
+    return await axios.get(Commons.SERVER_DOMAIN + "/chat/list");
   },
   // 채팅방 정보 보기
   chatDetail: async (roomId) => {
     console.log("Axios 채팅방 정보 : ", roomId);
-    return await axios.get(SERVER_DOMAIN + `/chat/room/${roomId}`);
+    return await axios.get(Commons.SERVER_DOMAIN + `/chat/room/${roomId}`);
   },
   // 채팅방 생성
   chatCreate: async (name) => {
     const chat = {
       name: name,
     };
-    return await axios.post(SERVER_DOMAIN + "/chat/new", chat);
+    return await axios.post(Commons.SERVER_DOMAIN + "/chat/new", chat);
   },
 };
 
