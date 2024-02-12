@@ -3,8 +3,8 @@ import "moment/locale/ko";
 moment.locale("ko"); // 한국 시간 적용
 
 const Commons = {
-  SERVER_DOMAIN: "http://172.30.1.15:8111",
-  SERVER_SOCKET_URL: "ws://172.30.1.15:8111/ws/chat",
+  SERVER_DOMAIN: "http://172.30.1.22:8111",
+  SERVER_SOCKET_URL: "ws://172.30.1.22:8111/ws/chat",
   timeFromNow: (timestamp) => {
     return moment(timestamp).fromNow();
   },

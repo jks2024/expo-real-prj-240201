@@ -13,29 +13,29 @@ import { useNavigation } from "@react-navigation/native";
 const styles = StyleSheet.create({
   chatListContainer: {
     flex: 1,
-    backgroundColor: "#f3f3f3",
-    borderRadius: 10,
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    backgroundColor: "white",
   },
   chatRoom: {
     backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
+    borderWidth: 0, // Remove border to make it cleaner
     marginBottom: 10,
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 10, // Rounded corners for a softer look
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2, // subtle shadow for depth
+    flexDirection: "row", // Align items in a row
+    alignItems: "center", // Center items vertically in the container
   },
   chatName: {
-    fontSize: 24,
-    marginBottom: 10,
+    fontSize: 20,
     color: "#444",
+    flex: 1,
   },
   chatDate: {
-    fontSize: 16,
-    color: "#666",
+    fontSize: 14,
+    color: "#999",
     textAlign: "right",
   },
   circleFixedButton: {
@@ -47,14 +47,16 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1da1f2",
-    shadowOffset: { width: 1, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
+    backgroundColor: "orange",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   buttonLabel: {
     fontSize: 30,
     color: "white",
+    fontWeight: "bold",
   },
 });
 

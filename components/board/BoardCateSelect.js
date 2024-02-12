@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  View,
+} from "react-native";
 
 const BoardCateSelect = ({ categories, selectedCategory, onSelect }) => {
   return (
@@ -33,9 +39,9 @@ const BoardCateSelect = ({ categories, selectedCategory, onSelect }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "row",
-    padding: 10,
-    paddingBottom: 5,
+    alignItems: "center",
   },
   category: {
     marginRight: 5,

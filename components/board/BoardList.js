@@ -1,17 +1,16 @@
-import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import BoardItem from './BoardItem';
+import React from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import BoardItem from "./BoardItem";
 
-const BoardList = ({boardList, onItemPress}) => {
+const BoardList = ({ boardList, onItemPress }) => {
   return (
     <FlatList
       style={styles.block}
       data={boardList}
-      renderItem={({item}) => (
+      renderItem={({ item }) => (
         <BoardItem item={item} onPress={() => onItemPress(item)} />
       )}
-      keyExtractor={item => item.boardId.toString()}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      keyExtractor={(item) => item.boardId.toString()}
     />
   );
 };
@@ -19,12 +18,7 @@ const BoardList = ({boardList, onItemPress}) => {
 const styles = StyleSheet.create({
   block: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-  separator: {
-    backgroundColor: '#E0E0E0',
-    height: 1,
-    width: '100%',
+    backgroundColor: "#fff",
   },
 });
 export default BoardList;

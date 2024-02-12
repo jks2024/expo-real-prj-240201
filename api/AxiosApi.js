@@ -69,14 +69,36 @@ const AxiosApi = {
     );
   },
   // 게시글 쓰기
-  boardWrite: async (email, title, category, content, fileUri) => {
-    console.log("게시글 쓰기 : ", email, title, category, content, fileUri);
+  boardWrite: async (
+    email,
+    title,
+    category,
+    content,
+    fileUri,
+    addr,
+    lat,
+    long
+  ) => {
+    console.log(
+      "게시글 쓰기 : ",
+      email,
+      title,
+      category,
+      content,
+      fileUri,
+      addr,
+      lat,
+      long
+    );
     const board = {
       email: email,
       title: title,
       categoryId: category,
       content: content,
       img: fileUri,
+      address: addr,
+      latitude: lat,
+      longitude: long,
     };
     return await axios.post(Commons.SERVER_DOMAIN + "/api/board/new", board);
   },

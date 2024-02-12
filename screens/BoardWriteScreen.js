@@ -3,10 +3,13 @@ import {
   View,
   Alert,
   TextInput,
-  Button,
+  KeyboardAvoidingView,
   StyleSheet,
   Image,
   ScrollView,
+  TouchableOpacity,
+  Text,
+  Platform,
 } from "react-native";
 import AxiosApi from "../api/AxiosApi";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -15,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { initFirebase } from "../api/firebase";
 import BoardCateSelect from "../components/board/BoardCateSelect";
+import LocationSearch from "../components/LocationSearch";
 
 initFirebase();
 
@@ -26,6 +30,7 @@ const BoardWriteScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
+  const [location, setLocation] = useState({});
 
   useEffect(() => {
     const loadEmail = async () => {
@@ -72,9 +77,31 @@ const BoardWriteScreen = () => {
     }
   };
 
+  const handlePhotoPick = async () => {
+    const cameraPermissionResult =
+      await ImagePicker.requestCameraPermissionsAsync();
+    if (!cameraPermissionResult.granted) {
+      Alert.alert("퍼미션 에러", "카메라를 사용하기 위한 권한이 필요합니다.");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+
+    if (!pickerResult.canceled) {
+      setFileUri(pickerResult.assets[0].uri);
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!title || !content) {
-      Alert.alert("Validation Error", "Title and content are required");
+    if (!title || !content || selectedCategory === "all") {
+      Alert.alert(
+        "Validation Error",
+        "Title, content, and category are required."
+      );
       return;
     }
 
@@ -94,7 +121,10 @@ const BoardWriteScreen = () => {
         title,
         selectedCategory,
         content,
-        url
+        url,
+        location.name,
+        location.latitude,
+        location.longitude
       );
       if (rsp.data) {
         Alert.alert("게시글 작성 성공", "게시글이 성공적으로 작성되었습니다.");
@@ -112,39 +142,82 @@ const BoardWriteScreen = () => {
     setSelectedCategory("all");
   };
 
+  const handleImagePress = () => {
+    Alert.alert(
+      "프로필 사진 설정",
+      "프로필 사진으로 설정할 방법을 선택하세요.",
+      [
+        {
+          text: "사진 선택",
+          onPress: handleImagePick,
+        },
+        {
+          text: "카메라",
+          onPress: handlePhotoPick,
+        },
+        {
+          text: "취소",
+          onPress: () => {},
+          style: "cancel",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <BoardCateSelect
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelect={setSelectedCategory}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={setTitle}
-        value={title}
-        placeholder="제목"
-      />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // Android에 대해 "height" 사용
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <BoardCateSelect
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelect={setSelectedCategory}
+        />
+        <View style={styles.margin} />
+        <TextInput
+          style={styles.input}
+          onChangeText={setTitle}
+          value={title}
+          placeholder="제목"
+        />
 
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        onChangeText={setContent}
-        value={content}
-        placeholder="내용"
-        multiline
-        numberOfLines={4}
-      />
-      <Button title="이미지 선택" onPress={handleImagePick} />
-      <View style={styles.margin} />
-      {fileUri ? (
-        <Image source={{ uri: fileUri }} style={styles.image} />
-      ) : null}
-
-      <View style={styles.buttonContainer}>
-        <Button title="글쓰기" onPress={handleSubmit} />
-        <Button title="취소" onPress={handleReset} color="red" />
-      </View>
-    </ScrollView>
+        <TextInput
+          style={[styles.input, styles.textArea]}
+          onChangeText={setContent}
+          value={content}
+          placeholder="내용"
+          multiline
+          numberOfLines={4}
+        />
+        <LocationSearch
+          onLocationSelected={(selectedLocation) => {
+            setLocation(selectedLocation);
+          }}
+        />
+        {location.name && (
+          <View>
+            <Text style={styles.locationInfo}>{location.name}</Text>
+          </View>
+        )}
+        <TouchableOpacity style={styles.imagePicker} onPress={handleImagePress}>
+          <Text style={styles.imagePickerText}>이미지 선택</Text>
+        </TouchableOpacity>
+        {fileUri ? (
+          <Image source={{ uri: fileUri }} style={styles.image} />
+        ) : null}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>글쓰기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cancelButton} onPress={handleReset}>
+            <Text style={styles.buttonText}>취소</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -152,6 +225,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  scrollViewContent: {
+    padding: 10,
   },
   title: {
     fontSize: 24,
@@ -174,14 +250,56 @@ const styles = StyleSheet.create({
     height: 160,
     resizeMode: "contain",
     alignSelf: "center",
+    marginBottom: 20,
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    fflexDirection: "row",
+    justifyContent: "space-between", // Adjusted for better spacing
+    paddingHorizontal: 20, // Add padding for outer spacing
+    marginTop: 20,
+  },
+  margin: {
+    marginBottom: 10,
+  },
+  submitButton: {
+    backgroundColor: "#FEE500", // KakaoTalk yellow
+    paddingVertical: 10,
+    paddingHorizontal: 30, // Adjusted for better button sizing
+    borderRadius: 5,
+    alignItems: "center",
+    flex: 1, // Adjust for equal spacing
+    marginRight: 10,
+  },
+  cancelButton: {
+    backgroundColor: "#F8F8F8", // Light gray
+    paddingVertical: 10,
+    paddingHorizontal: 30, // Adjusted for better button sizing
+    borderRadius: 5,
+    alignItems: "center",
+    flex: 1,
+  },
+  imagePicker: {
+    backgroundColor: "#E0E0E0", // Subtle grey for the button
+    borderRadius: 5,
+    padding: 10,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  imagePickerText: {
+    color: "#000", // Black text for better contrast
+  },
+  buttonText: {
+    fontWeight: "bold",
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 20,
   },
-  margin: {
-    marginBottom: 10,
+  locationInfo: {
+    fontSize: 12,
+    marginBottom: 12,
   },
 });
 

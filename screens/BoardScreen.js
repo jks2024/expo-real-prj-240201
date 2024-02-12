@@ -74,8 +74,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cateSelectContainer: {
-    height: 50, // 카테고리 선택 부분의 높이를 50으로 고정
+    height: 50,
     backgroundColor: "white",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
   },
   boardListContainer: {
     flex: 1, // 나머지 공간을 모두 차지하도록 설정
@@ -89,19 +93,17 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1da1f2",
+    backgroundColor: "orange", // KakaoTalk's iconic yellow for the primary action button
     shadowColor: "#000",
-    shadowOffset: {
-      width: 1,
-      height: 4,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   writeButtonText: {
     fontSize: 30,
     color: "white",
+    fontWeight: "bold",
   },
 });
 

@@ -109,20 +109,23 @@ const BoardDetail = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={toggleComments} style={styles.button}>
+        <TouchableOpacity
+          onPress={toggleComments}
+          style={styles.toggleCommentsButton}
+        >
           <Text style={styles.buttonText}>
-            {showComments ? "댓글 보기" : `댓글 숨기기 (${comments.length})`}
+            {showComments ? `댓글 숨기기 ` : `댓글 보기(${comments.length})`}
           </Text>
         </TouchableOpacity>
         {loginUserEmail === board?.email && (
-          <>
-            <TouchableOpacity onPress={modifyBoard} style={styles.button}>
+          <View style={styles.manageButtonContainer}>
+            <TouchableOpacity onPress={modifyBoard} style={styles.editButton}>
               <Text style={styles.buttonText}>수정하기</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={deleteBoard} style={styles.button}>
+            <TouchableOpacity onPress={deleteBoard} style={styles.deleteButton}>
               <Text style={styles.buttonText}>삭제하기</Text>
             </TouchableOpacity>
-          </>
+          </View>
         )}
       </View>
 
@@ -136,7 +139,7 @@ const BoardDetail = () => {
         onPress={handleSubmitComment}
         style={styles.submitButton}
       >
-        <Text style={styles.submitButtonText}>Submit Comment</Text>
+        <Text style={styles.submitButtonText}>댓글 쓰기</Text>
       </TouchableOpacity>
       {showComments &&
         comments.map((comment, index) => (
@@ -154,10 +157,91 @@ const BoardDetail = () => {
   );
 };
 
+const kakaoYellow = "#FEE500"; // KakaoTalk yellow color
+const kakaoDarkGray = "#3C1E1E"; // KakaoTalk text color for better contrast with yellow
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "white", // KakaoTalk's light background color
+  },
+  // Other styles remain unchanged...
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  toggleCommentsButton: {
+    backgroundColor: kakaoYellow,
+    padding: 10,
+    borderRadius: 5,
+    flex: 1, // Take full width when alone
+    marginRight: 10, // Space between buttons
+  },
+  manageButtonContainer: {
+    flexDirection: "row",
+    flex: 1, // Occupy remaining space
+    justifyContent: "space-between",
+  },
+  editButton: {
+    backgroundColor: kakaoYellow,
+    padding: 10,
+    borderRadius: 5,
+    flex: 0.48, // Nearly half width of the parent minus margin
+  },
+  deleteButton: {
+    backgroundColor: "#FF6B6B", // Red color for delete action
+    padding: 10,
+    borderRadius: 5,
+    flex: 0.48, // Nearly half width of the parent minus margin
+  },
+  buttonText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: kakaoDarkGray, // Dark color for better readability on yellow
+  },
+  submitButton: {
+    backgroundColor: kakaoYellow,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  submitButtonText: {
+    color: kakaoDarkGray,
+    fontWeight: "bold",
+  },
+  commentInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF", // Light background for the input
+  },
+  commentItem: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+    backgroundColor: "#FAFAFA", // Slightly off-white for comments to differentiate
+  },
+  commentHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  commentEmail: {
+    fontStyle: "italic",
+    color: kakaoDarkGray,
+  },
+  commentDate: {
+    fontSize: 14,
+    color: "#999",
+  },
+  commentContent: {
+    fontSize: 16,
+    color: kakaoDarkGray,
   },
   fieldContainer: {
     flexDirection: "row",
@@ -176,7 +260,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#333",
+    color: kakaoDarkGray,
   },
   content: {
     fontSize: 16,
@@ -187,59 +271,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
     textAlign: "right",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#007bff",
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "#ffffff",
-    textAlign: "center",
-  },
-  commentInput: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  submitButton: {
-    backgroundColor: "#68d785",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    borderRadius: 5,
-  },
-  submitButtonText: {
-    color: "#ffffff",
-  },
-  commentItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-  },
-  commentHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 5,
-  },
-  commentEmail: {
-    fontStyle: "italic",
-    color: "#555",
-  },
-  commentDate: {
-    fontSize: 14,
-    color: "#999",
-  },
-  commentContent: {
-    fontSize: 16,
-    color: "#333",
   },
 });
 

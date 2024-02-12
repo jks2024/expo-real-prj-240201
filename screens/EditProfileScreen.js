@@ -45,8 +45,31 @@ const EditProfileScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleTakePhoto = async () => {
+    const cameraPermissionResult =
+      await ImagePicker.requestCameraPermissionsAsync();
+    if (!cameraPermissionResult.granted) {
+      Alert.alert("퍼미션 에러", "카메라를 사용하기 위한 권한이 필요합니다.");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+
+    if (!pickerResult.canceled) {
+      setProfileImage({ uri: pickerResult.assets[0].uri });
+    }
+  };
+
   const handleSave = async () => {
     try {
+      if (!profileImage.uri) {
+        Alert.alert("Error", "No profile image to upload.");
+        return;
+      }
       const extension = profileImage.uri.split(".").pop(); // 확장자 추출
       const filename = `${email.split("@")[0]}.${extension}`; // 파일 이름 결정
       const storage = getStorage();
@@ -70,10 +93,7 @@ const EditProfileScreen = ({ route, navigation }) => {
       await AxiosApi.memberUpdate(email, name, url);
 
       // 성공 알림
-      Alert.alert(
-        "Profile Updated",
-        "Your profile has been updated successfully."
-      );
+      Alert.alert("프로필 수정 완료", "프로필이 성공적으로 수정되었습니다.");
 
       // 이전 화면으로 돌아가기
       navigation.goBack();
@@ -84,13 +104,40 @@ const EditProfileScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleImagePress = () => {
+    Alert.alert(
+      "프로필 사진 설정",
+      "프로필 사진으로 설정할 방법을 선택하세요.",
+      [
+        {
+          text: "사진 선택",
+          onPress: handleChoosePhoto,
+        },
+        {
+          text: "카메라",
+          onPress: handleTakePhoto,
+        },
+        {
+          text: "취소",
+          onPress: () => {},
+          style: "cancel",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.imageContainer}
-        onPress={handleChoosePhoto}
+        onPress={handleImagePress}
       >
-        <Image source={{ uri: profileImage.uri }} style={styles.profileImage} />
+        <Image
+          key={profileImage.uri}
+          source={{ uri: profileImage.uri }}
+          style={styles.profileImage}
+        />
         <View style={styles.overlayContainer}>
           <Text style={styles.editText}>편집</Text>
         </View>
