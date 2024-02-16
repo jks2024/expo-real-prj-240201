@@ -118,7 +118,7 @@ const Chatting = () => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"} // iOS는 padding, Android는 height
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0} // iOS에서 헤더 또는 상단 바 높이에 따라 조정
+      keyboardVerticalOffset={Platform.OS === "ios" ? 96 : 0} // iOS에서 헤더 또는 상단 바 높이에 따라 조정
     >
       <View style={styles.container}>
         <Text style={styles.header}>채팅방 {roomName}</Text>

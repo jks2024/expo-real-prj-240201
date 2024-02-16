@@ -1,64 +1,113 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {TransBtn} from '../components/ButtonComponent';
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import MovieCardView from "../components/MovieCardView"; // 이 경로는 적절히 조정하세요
+import AxiosApi from "../api/AxiosApi"; // 이 경로는 적절히 조정하세요
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const [movies, setMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
 
-  useEffect(() => {
-    const load = async () => {
-      const isLogin = await AsyncStorage.getItem('isLogin');
-      if (isLogin !== 'TRUE') {
-        navigation.navigate('Login');
-      }
-    };
-    load();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchTotalPage = async () => {
+        try {
+          const res = await AxiosApi.moviePage(0, 10);
+          setTotalPage(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchTotalPage();
+    }, [])
+  );
 
-  const onClickBtn = num => {
-    switch (num) {
-      case 1:
-        navigation.navigate('MyInfo');
-        break;
-      case 2:
-        navigation.navigate('Board');
-        break;
-      case 3:
-        navigation.navigate('Chatting');
-        break;
-      case 4:
-        navigation.navigate('MyLoc');
-        break;
-    }
+  useFocusEffect(
+    useCallback(() => {
+      const fetchMovies = async () => {
+        try {
+          const res = await AxiosApi.moviePageList(currentPage, 10);
+          console.log(res.data);
+          setMovies(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchMovies();
+    }, [currentPage])
+  );
+
+  const handlePageChange = (number) => {
+    console.log(number);
+    setCurrentPage(number - 1);
   };
 
-  return (
-    <View style={styles.block}>
-      <TransBtn color="royalblue" onPress={() => onClickBtn(1)}>
-        내 정보
-      </TransBtn>
-      <TransBtn color="royalblue" onPress={() => onClickBtn(2)}>
-        게시판
-      </TransBtn>
-      <TransBtn color="royalblue" onPress={() => onClickBtn(3)}>
-        채팅
-      </TransBtn>
-      <TransBtn color="royalblue" onPress={() => onClickBtn(4)}>
-        내 위치
-      </TransBtn>
+  const renderPagination = () => (
+    <View style={styles.paginationContainer}>
+      {Array.from({ length: totalPage }, (_, i) => i + 1).map((page) => (
+        <TouchableOpacity
+          key={page}
+          style={styles.pageButton}
+          onPress={() => handlePageChange(page)}
+        >
+          <Text>{page}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
+  );
+
+  return (
+    <ScrollView>
+      <View style={styles.cardContainer}>
+        {movies.map((movie) => (
+          <MovieCardView
+            key={movie.rank.toString()}
+            rank={movie.rank}
+            image={movie.image}
+            title={movie.title}
+            score={movie.score}
+            rate={movie.rate}
+            reservation={movie.reservation}
+            date={movie.date}
+          />
+        ))}
+      </View>
+      {renderPagination()}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  block: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    margin: 26,
+  cardContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    backgroundColor: "#eee",
+    padding: 20,
+    gap: 8,
+  },
+  paginationContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 40,
+  },
+  pageButton: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 5,
+    width: 28,
+    marginHorizontal: 5,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
